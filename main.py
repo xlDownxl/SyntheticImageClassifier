@@ -17,11 +17,12 @@ import argparse
 from torchvision.utils import save_image
 import pandas as pd
 import datetime
+from utils import *
 
 
 def downsample_dataset(dataset, fraction=0.2, exclude_indices=None):
     """
-    Downsample the dataset to the given fraction, ensuring no overlap with exclude_indices
+    Downsample the dataset to the given fraction, ensuring no overlap with exclude_indices.
     """
     size = int(len(dataset) * fraction)
     all_indices = set(range(len(dataset)))
@@ -31,7 +32,7 @@ def downsample_dataset(dataset, fraction=0.2, exclude_indices=None):
         available_indices = list(all_indices)
 
     if size > len(available_indices):
-        raise ValueError("Requested downsample size exceeds available indices")
+        raise ValueError("Requested downsample size exceeds available indices after exclusion.")
     
     selected_indices = random.sample(available_indices, size)
     return Subset(dataset, selected_indices), selected_indices
@@ -213,7 +214,7 @@ def define_model(num_classes=2, pretrained=True):
     return model
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, device, output_dir, save_path, num_epochs=10):
+def train_model(model, train_loader, val_loader, criterion, optimizer, device, output_dir, save_path, num_epochs=10, use_fourier= True, apply_highpass=False, highpass_cutoff=10):
     model.to(device)
     model.train()
     evaluate_model(
@@ -223,6 +224,9 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, o
         output_dir=output_dir,
         epoch=-1,
         iteration=-1,
+        use_fourier = use_fourier,
+        apply_highpass=apply_highpass,
+        highpass_cutoff=highpass_cutoff
     )
 
     for epoch in range(num_epochs):
@@ -233,10 +237,19 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, o
             images = images.to(device)
             labels = labels.to(device).float()
 
+            # Zero the parameter gradients
             optimizer.zero_grad()
 
-            # Forward pass
-            outputs = model(images)
+            if use_fourier:
+
+                with torch.no_grad():
+                    fourier_images = compute_fourier(images, log_scale=True, shift=True, apply_highpass=apply_highpass, highpass_cutoff=highpass_cutoff)
+
+                # Forward pass
+                outputs = model(fourier_images)
+            else:
+                # Forward pass
+                outputs = model(images)
             loss = criterion(outputs, labels)
 
             # Backward pass and optimization
@@ -257,6 +270,9 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, o
             output_dir=output_dir,
             epoch=epoch,
             iteration=counter,
+            use_fourier = use_fourier,
+            apply_highpass=apply_highpass, 
+            highpass_cutoff=highpass_cutoff
         )
         
         model_save_path = os.path.join(output_dir, f"{save_path}_{epoch}.pth")
@@ -265,7 +281,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, o
     return model
 
 
-def evaluate_model(model, val_loader, device, output_dir='evaluation_outputs', samples_per_class=15, epoch=None, iteration=None, visualize=True):
+def evaluate_model(model, val_loader, device, output_dir='evaluation_outputs', samples_per_class=15, epoch=None, iteration=None, visualize=True, use_fourier = True, apply_highpass=False, highpass_cutoff=10):
     model.to(device)
     model.eval()
 
@@ -282,8 +298,13 @@ def evaluate_model(model, val_loader, device, output_dir='evaluation_outputs', s
         for images, labels, names in val_loader:
             images = images.to(device)
             labels = labels.to(device).float()  
+            if use_fourier:
+                fourier_images = compute_fourier(images, log_scale=True, shift=True, apply_highpass=apply_highpass, highpass_cutoff=highpass_cutoff)
 
-            outputs = model(images)  
+                # Forward pass
+                outputs = model(fourier_images)
+            else:
+                outputs = model(images)
 
             _, preds = torch.max(outputs, 1)  
             _, labels = torch.max(labels, 1)
@@ -392,7 +413,7 @@ def evaluate_model(model, val_loader, device, output_dir='evaluation_outputs', s
                 ax.axis('off')
                 ax.set_title(f"True: {sample['true_label']}\nPred: {sample['pred_label']}\nName: {sample['name']}")
             
-            plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust layout to accommodate suptitle
+            plt.tight_layout(rect=[0, 0.03, 1, 0.95])
             save_path = os.path.join(output_dir, f'epoch_{epoch}_iteration_{iteration}_{filename_prefix}_{key}.png')
             plt.savefig(save_path)
             plt.close()
@@ -403,7 +424,7 @@ def evaluate_model(model, val_loader, device, output_dir='evaluation_outputs', s
 
     plot_and_save(misclassified_samples, 'Misclassified Samples', 'misclassified_samples')
 
-    return mean_accuracy, cm  # Optionally return metrics
+    return mean_accuracy, cm
 
 
 def main(args):
@@ -420,13 +441,17 @@ def main(args):
 
     os.makedirs(output_dir, exist_ok=True)
 
-    #Define transformations
+    # Define transformations
     train_transform = get_train_transforms(
         img_size=args.img_size, 
+        use_gradient=args.use_gradient, 
+        use_fourier=args.use_fourier, 
         crop=args.crop
     )
     test_transform = get_test_transforms(
         img_size=args.img_size, 
+        use_gradient=args.use_gradient, 
+        use_fourier=args.use_fourier, 
         crop=args.crop
     )
 
@@ -467,6 +492,9 @@ def main(args):
             output_dir=output_dir,
             save_path=args.save_path,
             num_epochs=num_epochs,
+            use_fourier= args.use_fourier,
+            apply_highpass=args.apply_highpass,
+            highpass_cutoff=args.highpass_cutoff,
         )
 
 
@@ -483,7 +511,13 @@ if __name__ == '__main__':
         
         parser.add_argument('--crop', action='store_true', help='Crop instead of resize')
         parser.add_argument('--img_size', type=int, nargs=2, default=[640,480], help="Image size for training and evaluation")
-        parser.add_argument('--pretrained', action='store_true', help="Use pretrained weights for the resnet")
+        parser.add_argument('--pretrained', action='store_true', help="Use pretrained weights for the model")
+
+        parser.add_argument('--use_gradient', action='store_true', help='Use gradient transform')
+        parser.add_argument('--use_fourier', action='store_true', help='Use Fourier transform')
+        parser.add_argument('--apply_highpass', action='store_true', help='Apply high-pass filter')
+        parser.add_argument('--highpass_cutoff', type=int, default=10, help='High-pass filter cutoff frequency')
+
 
         parser.add_argument('--tartan_path', type=str, default='../tartanair', help='Path to TartanAir dataset')
         parser.add_argument('--diode_path', type=str, default='../diode', help='Path to Diode dataset')
