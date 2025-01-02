@@ -440,9 +440,20 @@ def main(args):
     random.seed(1)
     eval_only = args.eval_only
     model_path = args.model_path
+    compute_mean_std = False
 
     current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    slurm_job_name = os.environ.get('SLURM_JOB_NAME')
+    slurm_job_id = os.environ.get('SLURM_JOB_ID')
+
     folder_name = current_time
+    if slurm_job_name and slurm_job_id:
+        folder_name += f"_{slurm_job_name}_{slurm_job_id}"
+    elif slurm_job_name:
+        folder_name += f"_{slurm_job_name}"
+    elif slurm_job_id:
+        folder_name += f"_{slurm_job_id}"
 
     base_output_dir = "logs"
     output_dir = os.path.join(base_output_dir, folder_name)
@@ -475,6 +486,10 @@ def main(args):
         train_dataset, val_dataset, 
         batch_size=args.batch_size, num_workers=args.num_workers
     )
+
+    if compute_mean_std:
+        compute_image_statistics(train_loader, apply_highpass=args.apply_highpass, highpass_cutoff=args.highpass_cutoff)
+
 
     model = define_model(num_classes=2, pretrained=args.pretrained) 
 
