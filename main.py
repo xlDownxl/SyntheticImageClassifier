@@ -214,7 +214,7 @@ def define_model(num_classes=2, pretrained=True):
     return model
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, device, output_dir, save_path, num_epochs=10, use_fourier= True, apply_highpass=False, highpass_cutoff=10):
+def train_model(model, train_loader, val_loader, criterion, optimizer, device, output_dir, save_path, num_epochs=10, use_fourier= True, apply_highpass=False, highpass_cutoff=10, warmup_epochs=1, warmup_lr=0.00001, ):
     model.to(device)
     model.train()
     evaluate_model(
@@ -229,6 +229,11 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, o
         highpass_cutoff=highpass_cutoff
     )
 
+    original_lr = optimizer.param_groups[0]['lr']
+    if warmup_epochs > 0:
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = warmup_lr
+
     for epoch in range(num_epochs):
         model.train()
         running_loss = 0.0
@@ -241,7 +246,6 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, o
             optimizer.zero_grad()
 
             if use_fourier:
-
                 with torch.no_grad():
                     fourier_images = compute_fourier(images, log_scale=True, shift=True, apply_highpass=apply_highpass, highpass_cutoff=highpass_cutoff)
 
@@ -260,6 +264,10 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, o
 
             counter += 1
 
+        if epoch == -1:  # Restore learning rate after warm-up
+            for param_group in optimizer.param_groups:
+                param_group['lr'] = original_lr
+
         epoch_loss = running_loss / len(train_loader.dataset)
         print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss:.4f}")
 
@@ -274,9 +282,9 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, o
             apply_highpass=apply_highpass, 
             highpass_cutoff=highpass_cutoff
         )
-        
-        model_save_path = os.path.join(output_dir, f"{save_path}_{epoch}.pth")
-        torch.save(model.state_dict(), model_save_path)
+        if epoch >= 0:
+            model_save_path = os.path.join(output_dir, f"{save_path}_{epoch}.pth")
+            torch.save(model.state_dict(), model_save_path)
 
     return model
 
@@ -495,6 +503,8 @@ def main(args):
             use_fourier= args.use_fourier,
             apply_highpass=args.apply_highpass,
             highpass_cutoff=args.highpass_cutoff,
+            warmup_epochs=args.warmup_epochs, 
+            warmup_lr=args.warmup_lr,
         )
 
 
@@ -517,7 +527,8 @@ if __name__ == '__main__':
         parser.add_argument('--use_fourier', action='store_true', help='Use Fourier transform')
         parser.add_argument('--apply_highpass', action='store_true', help='Apply high-pass filter')
         parser.add_argument('--highpass_cutoff', type=int, default=10, help='High-pass filter cutoff frequency')
-
+        parser.add_argument('--warmup_epochs', type=int, default=1, help='Number of warm-up epochs')
+        parser.add_argument('--warmup_lr', type=float, default=0.00001, help='Learning rate during warm-up')
 
         parser.add_argument('--tartan_path', type=str, default='../tartanair', help='Path to TartanAir dataset')
         parser.add_argument('--diode_path', type=str, default='../diode', help='Path to Diode dataset')
@@ -528,6 +539,7 @@ if __name__ == '__main__':
         parser.add_argument('--synthia_path', type=str, default='../synthia', help='Path to Synthia dataset')
         parser.add_argument('--nyu_path', type=str, default='../nyu_test/color', help='Path to NYU dataset')
         parser.add_argument('--hypersim_path', type=str, default='../ml-hypersim/contrib/99991/downloads', help='Path to Hypersim dataset')
+        
         return parser.parse_args()
 
     args = parse_args()
