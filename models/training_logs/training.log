@@ -1,0 +1,240 @@
+2025-01-02 11:20:33,839 [INFO] Output directory created at: logs/20250102_112033_grid_1_71581983
+2025-01-02 11:20:33,841 [INFO] Arguments: Namespace(eval_only=False, model_path='resnet18_maritime_classifier', save_path='resnet18_maritime_classifier', num_epochs=10, batch_size=32, num_workers=12, lr=0.0001, warmup_epochs=1, warmup_lr=1e-05, use_gradient=False, use_fourier=True, crop=True, img_size=[640, 480], pretrained=True, apply_highpass=False, highpass_cutoff=10, tartan_path='../tartanair', diode_path='../diode', tum_path='../tum', singapore_path='../singapore', aboships_path='../ABOshipsDataset', simuships_path='../simuships', synthia_path='../synthia', nyu_path='../nyu_test/color', hypersim_path='../ml-hypersim/contrib/99991/downloads')
+2025-01-02 11:20:33,843 [INFO] Saved arguments to logs/20250102_112033_grid_1_71581983/args.txt
+2025-01-02 11:25:45,593 [INFO] Using device: cuda
+2025-01-02 11:26:47,390 [INFO]   Dataset   Accuracy
+ aboships 100.000000
+    diode 100.000000
+      nyu 100.000000
+singapore  98.886986
+ hypersim   0.326797
+simuships   0.000000
+  synthia   0.000000
+   tartan   0.000000
+2025-01-02 11:26:47,418 [INFO] Mean Accuracy Across Datasets: 49.90%
+2025-01-02 11:26:47,423 [INFO] Confusion Matrix:
+[[4053   26]
+ [8909    1]]
+2025-01-02 11:26:48,483 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_-1_correct_sample_predictions_Synthetic.png
+2025-01-02 11:26:49,750 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_-1_correct_sample_predictions_Real.png
+2025-01-02 11:26:50,780 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_-1_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:26:51,743 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_-1_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 11:29:42,246 [INFO] Epoch [0/10], Loss: 0.0844
+2025-01-02 11:30:11,942 [INFO]   Dataset   Accuracy
+ aboships 100.000000
+    diode 100.000000
+singapore 100.000000
+simuships 100.000000
+  synthia 100.000000
+   tartan  99.928571
+      nyu  97.094801
+ hypersim  79.411765
+2025-01-02 11:30:11,942 [INFO] Mean Accuracy Across Datasets: 97.05%
+2025-01-02 11:30:11,944 [INFO] Confusion Matrix:
+[[4060   19]
+ [  69 8841]]
+2025-01-02 11:30:13,236 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 11:30:14,424 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 11:30:15,556 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:30:16,790 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 11:33:06,772 [INFO] Epoch [1/10], Loss: 0.0364
+2025-01-02 11:33:36,707 [INFO]   Dataset   Accuracy
+ aboships 100.000000
+    diode 100.000000
+singapore 100.000000
+simuships 100.000000
+  synthia 100.000000
+   tartan  99.619048
+      nyu  97.706422
+ hypersim  79.411765
+2025-01-02 11:33:36,707 [INFO] Mean Accuracy Across Datasets: 97.09%
+2025-01-02 11:33:36,709 [INFO] Confusion Matrix:
+[[4064   15]
+ [  95 8815]]
+2025-01-02 11:33:37,912 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_0_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 11:33:39,141 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_0_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 11:33:40,303 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_0_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:33:41,410 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_0_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 11:36:33,470 [INFO] Epoch [2/10], Loss: 0.0241
+2025-01-02 11:37:03,224 [INFO]   Dataset   Accuracy
+  synthia 100.000000
+   tartan  99.976190
+ aboships  99.898785
+singapore  99.785959
+simuships  99.489796
+    diode  99.009901
+      nyu  98.929664
+ hypersim  74.836601
+2025-01-02 11:37:03,225 [INFO] Mean Accuracy Across Datasets: 96.49%
+2025-01-02 11:37:03,228 [INFO] Confusion Matrix:
+[[4065   14]
+ [  80 8830]]
+2025-01-02 11:37:04,548 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_1_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 11:37:05,954 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_1_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 11:37:07,002 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_1_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:37:08,165 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_1_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 11:39:59,101 [INFO] Epoch [3/10], Loss: 0.0181
+2025-01-02 11:40:28,524 [INFO]   Dataset   Accuracy
+    diode 100.000000
+  synthia 100.000000
+singapore 100.000000
+simuships 100.000000
+   tartan 100.000000
+ aboships  92.408907
+      nyu  83.027523
+ hypersim  78.758170
+2025-01-02 11:40:28,526 [INFO] Mean Accuracy Across Datasets: 94.27%
+2025-01-02 11:40:28,527 [INFO] Confusion Matrix:
+[[3893  186]
+ [  65 8845]]
+2025-01-02 11:40:29,850 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_2_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 11:40:31,017 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_2_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 11:40:32,126 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_2_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:40:33,331 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_2_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 11:43:25,326 [INFO] Epoch [4/10], Loss: 0.0148
+2025-01-02 11:43:54,786 [INFO]   Dataset   Accuracy
+   tartan 100.000000
+  synthia 100.000000
+singapore 100.000000
+simuships 100.000000
+    diode  99.009901
+ aboships  98.886640
+ hypersim  88.235294
+      nyu  25.076453
+2025-01-02 11:43:54,787 [INFO] Mean Accuracy Across Datasets: 88.90%
+2025-01-02 11:43:54,791 [INFO] Confusion Matrix:
+[[3577  502]
+ [  36 8874]]
+2025-01-02 11:43:55,976 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_3_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 11:43:57,047 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_3_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 11:43:58,555 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_3_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:43:59,798 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_3_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 11:46:51,880 [INFO] Epoch [5/10], Loss: 0.0154
+2025-01-02 11:47:21,744 [INFO]   Dataset   Accuracy
+  synthia 100.000000
+singapore 100.000000
+   tartan  99.857143
+simuships  99.489796
+ aboships  98.582996
+    diode  97.029703
+ hypersim  89.542484
+      nyu  21.253823
+2025-01-02 11:47:21,744 [INFO] Mean Accuracy Across Datasets: 88.22%
+2025-01-02 11:47:21,751 [INFO] Confusion Matrix:
+[[3547  532]
+ [  45 8865]]
+2025-01-02 11:47:23,052 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_4_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 11:47:24,546 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_4_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 11:47:25,514 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_4_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:47:26,694 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_4_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 11:50:18,155 [INFO] Epoch [6/10], Loss: 0.0110
+2025-01-02 11:50:48,766 [INFO]   Dataset   Accuracy
+ aboships 100.000000
+    diode 100.000000
+singapore 100.000000
+simuships 100.000000
+  synthia 100.000000
+   tartan  99.940476
+      nyu  99.388379
+ hypersim  70.261438
+2025-01-02 11:50:48,766 [INFO] Mean Accuracy Across Datasets: 96.20%
+2025-01-02 11:50:48,767 [INFO] Confusion Matrix:
+[[4075    4]
+ [  96 8814]]
+2025-01-02 11:50:50,327 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_5_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 11:50:51,382 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_5_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 11:50:52,449 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_5_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:50:53,007 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_5_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 11:53:44,140 [INFO] Epoch [7/10], Loss: 0.0111
+2025-01-02 11:54:13,719 [INFO]   Dataset   Accuracy
+    diode 100.000000
+  synthia 100.000000
+singapore 100.000000
+simuships 100.000000
+   tartan  99.988095
+ aboships  99.493927
+      nyu  93.119266
+ hypersim  75.163399
+2025-01-02 11:54:13,720 [INFO] Mean Accuracy Across Datasets: 95.97%
+2025-01-02 11:54:13,723 [INFO] Confusion Matrix:
+[[4029   50]
+ [  77 8833]]
+2025-01-02 11:54:15,204 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_6_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 11:54:16,280 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_6_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 11:54:17,463 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_6_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:54:18,694 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_6_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 11:57:10,171 [INFO] Epoch [8/10], Loss: 0.0094
+2025-01-02 11:57:40,119 [INFO]   Dataset   Accuracy
+    diode 100.000000
+      nyu 100.000000
+  synthia 100.000000
+singapore 100.000000
+simuships  98.979592
+ aboships  98.785425
+   tartan  98.750000
+ hypersim   9.477124
+2025-01-02 11:57:40,119 [INFO] Mean Accuracy Across Datasets: 88.25%
+2025-01-02 11:57:40,163 [INFO] Confusion Matrix:
+[[4067   12]
+ [ 384 8526]]
+2025-01-02 11:57:41,501 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_7_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 11:57:42,633 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_7_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 11:57:43,935 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_7_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 11:57:45,032 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_7_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 12:00:36,485 [INFO] Epoch [9/10], Loss: 0.0078
+2025-01-02 12:01:06,099 [INFO]   Dataset   Accuracy
+singapore 100.000000
+  synthia 100.000000
+simuships 100.000000
+   tartan  99.988095
+    diode  99.009901
+ aboships  97.874494
+      nyu  95.871560
+ hypersim  89.542484
+2025-01-02 12:01:06,100 [INFO] Mean Accuracy Across Datasets: 97.79%
+2025-01-02 12:01:06,101 [INFO] Confusion Matrix:
+[[4030   49]
+ [  33 8877]]
+2025-01-02 12:01:07,338 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_8_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 12:01:08,638 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_8_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 12:01:09,635 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_8_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 12:01:10,733 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_8_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 12:04:02,630 [INFO] Epoch [10/10], Loss: 0.0073
+2025-01-02 12:04:31,743 [INFO]   Dataset   Accuracy
+    diode 100.000000
+  synthia 100.000000
+singapore 100.000000
+simuships 100.000000
+   tartan  99.988095
+      nyu  99.847095
+ aboships  95.141700
+ hypersim  52.614379
+2025-01-02 12:04:31,762 [INFO] Mean Accuracy Across Datasets: 93.45%
+2025-01-02 12:04:31,767 [INFO] Confusion Matrix:
+[[4030   49]
+ [ 146 8764]]
+2025-01-02 12:04:33,281 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_9_iteration_916_correct_sample_predictions_Synthetic.png
+2025-01-02 12:04:34,423 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_9_iteration_916_correct_sample_predictions_Real.png
+2025-01-02 12:04:35,526 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_9_iteration_916_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 12:04:36,887 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_9_iteration_916_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 12:04:37,775 [INFO] Training Completed.
+2025-01-02 12:04:37,775 [INFO] 
+Evaluating on the Validation Set:
+2025-01-02 12:05:06,642 [INFO]   Dataset   Accuracy
+    diode 100.000000
+  synthia 100.000000
+singapore 100.000000
+simuships 100.000000
+   tartan  99.988095
+      nyu  99.847095
+ aboships  95.141700
+ hypersim  52.614379
+2025-01-02 12:05:06,643 [INFO] Mean Accuracy Across Datasets: 93.45%
+2025-01-02 12:05:06,645 [INFO] Confusion Matrix:
+[[4030   49]
+ [ 146 8764]]
+2025-01-02 12:05:07,986 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_0_correct_sample_predictions_Synthetic.png
+2025-01-02 12:05:09,146 [INFO] Saved correct_sample_predictions samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_0_correct_sample_predictions_Real.png
+2025-01-02 12:05:10,424 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_0_misclassified_samples_Synthetic_as_Real.png
+2025-01-02 12:05:11,628 [INFO] Saved misclassified_samples samples to logs/20250102_112033_grid_1_71581983/epoch_-1_iteration_0_misclassified_samples_Real_as_Synthetic.png
+2025-01-02 12:05:12,820 [INFO] Model saved to logs/20250102_112033_grid_1_71581983/resnet18_maritime_classifier_final.pth

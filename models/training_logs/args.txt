@@ -1,0 +1,25 @@
+eval_only: False
+model_path: resnet18_maritime_classifier
+save_path: resnet18_maritime_classifier
+num_epochs: 10
+batch_size: 32
+num_workers: 12
+lr: 0.0001
+warmup_epochs: 1
+warmup_lr: 1e-05
+use_gradient: False
+use_fourier: True
+crop: True
+img_size: [640, 480]
+pretrained: True
+apply_highpass: False
+highpass_cutoff: 10
+tartan_path: ../tartanair
+diode_path: ../diode
+tum_path: ../tum
+singapore_path: ../singapore
+aboships_path: ../ABOshipsDataset
+simuships_path: ../simuships
+synthia_path: ../synthia
+nyu_path: ../nyu_test/color
+hypersim_path: ../ml-hypersim/contrib/99991/downloads
