@@ -115,6 +115,12 @@ I trained the model for up to 10 epochs on a V100 GPU and evaluated it after eac
 The classifier achieved a high overall accuracy of approximately **98%** across all datasets. Notably, it performs significantly better than random guessing (which would yield around 50% accuracy) on all unseen test datasets. This is a strong indicator that the model learned generalizable features and successfully generalizes across datasets and environments. The strong performance on the unseen dataset ABOships is also crucial, as it is recorded in the bay of Turku, which is the same environment that the Simuships dataset is rendered in. Despite both datasets showing the same location, the classifier is able to distinguish them consistently, indicating further that environment independent features got learned.
 
 In the example images of correct and erroneous predictions, one pattern I could identify is that Hypersim images with extreme lighting, either completely dark or oversaturated, are often wrongly identified as real. 
+Using the benchmark_folder.py script, I have tested the model with some data from an overhead crane and found that the results can be pretty inconsistent, i.e. within one video the predictions swap multiple times between synthetic and real. Below are two examples where the upper got correctly classified as real, but the lower one as synthetic. Overall, the model is not perfect yet, but, given the small amount of training data, that was not expected.
+### Correctly Classified Crane Image
+<img src="res/crane_real.jpg" alt="Correctly classified Image" width="300"/>
+
+### Falsely Classified Crane Image
+<img src="res/crane_synthetic.jpg" alt="Falsely classified Image" width="300"/>
 
 
 ### Possibilities for Improvement
@@ -152,6 +158,20 @@ One domain that I have not covered in my tests are AI generated images. Given th
     ```bash
     python inference.py --use_fourier --crop --model_path models/resnet18_maritime_classifier_final.pth --image_path {path_to_your_image}
     ```
+## How to Benchmark the Model on an Image Folder
+
+1.  **Install Dependencies**:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+2.  **Run Inference**:
+
+    ```bash
+    python benchmark_folder.py --use_fourier --crop --model_path models/resnet18_maritime_classifier_final.pth --folder_path {path_to_image_folder} --image_type {real/synthetic}
+    ```
+The image type needs to be specified as either real or synthetic to compute the accuracy.
 
 ## How to Train a model
 
