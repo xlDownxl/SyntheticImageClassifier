@@ -84,7 +84,7 @@ Another preprocessing challenge is the high resolution of the maritime datasets 
   - Horizontal and vertical flipping.
   - Measured the mean and variance of the Fourier features to normalize them before inputting into the network.
 
-I trained the model for up to 10 epochs on a V100 GPU and evaluated it after each epoch on the test set. After training, I chose the model with the best test accuracy across all datasets, which happened in epoch 9. The model is uploaded to [Google Drive](https://drive.google.com/file/d/1-FT_3HiMtzy6vQDHPgumaEg36VrX5-5A/view?usp=sharing) and the training log, keyword parameters and visualizations of correctly and wrongly classified images can be found in the models/ folder.
+I trained the model for up to 10 epochs on a V100 GPU and evaluated it after each epoch on the test set. After training, I chose the model with the best test accuracy across all datasets, which happened in epoch 9. The trained model, the training log, keyword parameters and visualizations of correctly and wrongly classified images can be found in the models/ folder.
 
 ### Results
 
@@ -141,17 +141,13 @@ One domain that I have not covered in my tests are AI generated images. Given th
 
 ## How to run Inference
 
-1.  **Download the Pre-trained Model**:
-
-    Download the model from [Google Drive](https://drive.google.com/file/d/1-FT_3HiMtzy6vQDHPgumaEg36VrX5-5A/view?usp=sharing) and place it into the `models` folder.
-
-2.  **Install Dependencies**:
+1.  **Install Dependencies**:
 
     ```bash
     pip install -r requirements.txt
     ```
 
-3.  **Run Inference**:
+2.  **Run Inference**:
 
     ```bash
     python inference.py --use_fourier --crop --model_path models/resnet18_maritime_classifier_final.pth --image_path {path_to_your_image}
