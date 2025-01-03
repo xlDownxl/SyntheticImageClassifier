@@ -20,21 +20,22 @@ When faced with the task of distinguishing synthetic from real images, my first 
 
 Understanding the domain gap between synthetic and real images is crucial to solve the given problem. Typically, synthetic and real images differ through the sensor errors, which can manifest as high-frequency artifacts such as noise patterns, lens artifacts or sensor distortions.
 
-To ensure that the classifier generalizes beyond the training environment, the model must learn these general error-features rather than environment-specific cues. For instance, training on color images from both the Simuships and Singaporean datasets might lead the classifier to rely on features like sky brightness, which surely does not generalize well across different maritime datasets.
+To ensure that the classifier generalizes beyond the training environment, the model must learn these general error-features rather than environment-specific cues. For instance, training on color images from both the Simuships and Singaporean datasets might lead the classifier to rely on features like sky brightness, which is a case of overfitting where the model does not generalize well across different datasets.
 
 **Main Challenge**: Processing the data so that the model learns generalizable signals to distinguish real from synthetic images realiably independent of the visible environment.
 
 ### Train/Test Data
 
 As the generalization across environments is the main goal, it is important to train the model on a diverse set of data and subsequently test it on different real and synthetic sources that haven’t been included in the training data. In this case, it is easy to add data to the pipeline because the label is the same for the whole dataset.
-Personally, I had already downloaded a lot of Visual Odometry datasets to my system, which fit well with the theme of outdoor and indoor environment data. For training, I extended the Simuships dataset with more synthetic images from the TartanAir dataset and for the real images, I complemented the Singaporean dataset with the Diode dataset, resulting in around 15k images for both classes.
+Personally, I had already downloaded a lot of Visual Odometry datasets to my system, which cover a wide range of environments and scenarios. For training, I extended the Simuships dataset with more synthetic images from the TartanAir dataset and for the real images, I complemented the Singaporean dataset with the Diode dataset, resulting in around 15k images for both classes.
+For testing, I used a randomly sampled subset of data from the dataset listed below to reduce compute time.
 
 **Datasets Used**:
 - **Testing Data**:
-  - **Simuships (test-split)**
-  - **Singapore (test-split)**
-  - **TartanAir (test-split)**
-  - **Diode (test-split)**
+  - **Simuships** (test-split)
+  - **Singapore** (test-split)
+  - **TartanAir** (test-split)
+  - **Diode** (test-split)
   - **NYU** (Real)
   - **Hypersim** (Synthetic)
   - **Synthia** (Synthetic)
@@ -63,16 +64,16 @@ Personally, I had already downloaded a lot of Visual Odometry datasets to my sys
 
 ### Feature Engineering
 
-If the model would be trained on terabytes of data, it would likely be possible to learn generalizable signals from color images directly. However, it would use a lot of training time and compute resources, which can be avoided by feature engineering.
+If the model would be trained on terabytes of data, it would likely learn generalizable signals from color images directly. However, it would use a lot of training time and compute resources, which can be avoided by feature engineering.
 
-As we aim to extract characteristic high frequency features, it is much more efficient to train the network on the magnitude of the fourier transformation instead of the raw color image. By transforming the image, obvious false signals like the sky brightness are removed, while the important high frequency features are given in an explicit representation. To further shift the focus away from the irrelevant semantic content of the image towards generalizable high frequency features, I tried to use a high pass filter on the fourier features that filters out low frequencies. However, I found that the highpass filter (with a randomly chosen threshold of 10 pixels) does not improve the performance, so I omitted the highpass filter in the final model.
+As we aim to detect characteristic high frequency features, I decided to train the classifier on the magnitude of the fourier transformation instead of the raw color image. By transforming the image, obvious false signals like the sky brightness are removed, while the important high frequency features are given in an explicit representation. To further shift the focus away from the semantic content of the image towards generalizable high frequency features, I tried to use a high pass filter on the fourier features that filters out low frequencies. However, I found that the highpass filter (with a randomly chosen threshold of 10 pixels) does not improve the performance, so I omitted the highpass filter in the final model.
 
 Another preprocessing challenge is the high resolution of the maritime datasets containing full HD resolution images. Feeding them directly into the network without resizing is challenging due to GPU memory constraints. However, the resizing operation itself could, especially for the real images, remove certain noise patterns that are important for the classification task. Hence, I decided to do the training based on random crops of size 640x480 pixels and the testing based on a center crop of the same size.
 
 ### Training
 
 - **Model Architecture**: ResNet18
-  - Chosen for its small size and proven capabilities.
+  - Chosen for its small size and easier optimization.
 
 - **Optimizer**: Adam
   - **Learning Rate**: 0.0001
@@ -81,11 +82,9 @@ Another preprocessing challenge is the high resolution of the maritime datasets 
 
 - **Data Augmentation**:
   - Horizontal and vertical flipping.
-
-- **Feature Normalization**:
   - Measured the mean and variance of the Fourier features to normalize them before inputting into the network.
 
-I trained the model for up to 10 epochs on a V100 GPU and evaluated it after each epoch on the test set. After training, I chose the model with the best test accuracy across all datasets, which happened in epoch 9. The model is uploaded to [Google Drive](https://drive.google.com/file/d/1-FT_3HiMtzy6vQDHPgumaEg36VrX5-5A/view?usp=sharing) and the training log with keyword parameters as well as visualizations of correctly and wrongly classified images are saved in the models/ folder.
+I trained the model for up to 10 epochs on a V100 GPU and evaluated it after each epoch on the test set. After training, I chose the model with the best test accuracy across all datasets, which happened in epoch 9. The model is uploaded to [Google Drive](https://drive.google.com/file/d/1-FT_3HiMtzy6vQDHPgumaEg36VrX5-5A/view?usp=sharing) and the training log, keyword parameters and visualizations of correctly and wrongly classified images can be found in the models/ folder.
 
 ### Results
 
@@ -138,7 +137,7 @@ In the example images of correct and erroneous predictions, one pattern I could 
 
 From all the test datasets, the model performs the worst on the Hypersim dataset. As the hypersim is the most realistic from all the test datasets, this is an indication that the simulations are increasingly closing the domain gap and closely resembling real images. Future simulations could be able to fool the model and generate images that are classifiatied as real.
 
-One domain that I have not covered in my tests are AI generated images. Given the extreme progress of models that generate realistic images,  the distinction of real and fake images will gain a lot of attention. 
+One domain that I have not covered in my tests are AI generated images. Given the extreme progress of models that generate realistic images,  the distinction of real and fake images will gain more and more attention in the future. 
 
 ## How to run Inference
 
@@ -172,4 +171,4 @@ One domain that I have not covered in my tests are AI generated images. Given th
     python main.py --batch_size 32 --lr 0.0001 --warmup_epochs 1 --use_fourier --crop --pretrained  --num_epochs 10 --img_size 640 480 --num_workers 12
     ```
 
-Note that for training, the paths to the datasets need to be specified using keyword arguments. It is also possible to add more data by simply creating a new dataset with the dataset root and the annotation whether it's synthetic or real. The dataset will automatically take all images recursively in the dataset.
+Note that for training, the paths to the datasets need to be specified using keyword arguments. No processing of the data is needed, simply download the datasets using the instructions given by the creators and specify the path to the root directory of the dataset.
