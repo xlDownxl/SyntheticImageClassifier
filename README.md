@@ -68,7 +68,7 @@ If the model would be trained on terabytes of data, it would likely learn genera
 
 As we aim to detect characteristic high frequency features, I decided to train the classifier on the magnitude of the fourier transformation instead of the raw color image. By transforming the image, obvious false signals like the sky brightness are removed, while the important high frequency features are given in an explicit representation. To further shift the focus away from the semantic content of the image towards generalizable high frequency features, I tried to use a high pass filter on the fourier features that filters out low frequencies. However, I found that the highpass filter (with a randomly chosen threshold of 10 pixels) does not improve the performance, so I omitted the highpass filter in the final model.
 
-Another preprocessing challenge is the high resolution of the maritime datasets containing full HD resolution images. Feeding them directly into the network without resizing is challenging due to GPU memory constraints. However, the resizing operation itself could, especially for the real images, remove certain noise patterns that are important for the classification task. Hence, I decided to do the training based on random crops of size 640x480 pixels and the testing based on a center crop of the same size.
+Another preprocessing challenge is the high resolution of the maritime datasets containing full HD resolution images. Feeding them directly into the network without resizing is challenging due to GPU memory constraints. However, the resizing operation itself could, especially for the real images, remove certain noise patterns that are important for the classification task. Hence, I decided to do the training based on random crops of size 640x480 pixels and the testing based on a center crop of the same size. Currently the pipeline breaks when images with resolution lower than 640x480 pixels are used, but that can be fixed in the augmentations as the ResNet used can process input of varying resolutions.
 
 ### Training
 
@@ -84,7 +84,7 @@ Another preprocessing challenge is the high resolution of the maritime datasets 
   - Horizontal and vertical flipping.
   - Measured the mean and variance of the Fourier features to normalize them before inputting into the network.
 
-I trained the model for up to 10 epochs on a V100 GPU and evaluated it after each epoch on the test set. After training, I chose the model with the best test accuracy across all datasets, which happened in epoch 9. The model is uploaded to [Google Drive](https://drive.google.com/file/d/1-FT_3HiMtzy6vQDHPgumaEg36VrX5-5A/view?usp=sharing) and the training log, keyword parameters and visualizations of correctly and wrongly classified images can be found in the models/ folder.
+I trained the model for up to 10 epochs on a V100 GPU and evaluated it after each epoch on the test set. After training, I chose the model with the best test accuracy across all datasets, which happened in epoch 9. The trained model, the training log, keyword parameters and visualizations of correctly and wrongly classified images can be found in the models/ folder.
 
 ### Results
 
@@ -141,17 +141,13 @@ One domain that I have not covered in my tests are AI generated images. Given th
 
 ## How to run Inference
 
-1.  **Download the Pre-trained Model**:
-
-    Download the model from [Google Drive](https://drive.google.com/file/d/1-FT_3HiMtzy6vQDHPgumaEg36VrX5-5A/view?usp=sharing) and place it into the `models` folder.
-
-2.  **Install Dependencies**:
+1.  **Install Dependencies**:
 
     ```bash
     pip install -r requirements.txt
     ```
 
-3.  **Run Inference**:
+2.  **Run Inference**:
 
     ```bash
     python inference.py --use_fourier --crop --model_path models/resnet18_maritime_classifier_final.pth --image_path {path_to_your_image}
